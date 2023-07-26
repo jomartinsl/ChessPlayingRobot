@@ -1,26 +1,26 @@
 import ChessEngine as ce
 import chess as ch
+import testChess as te
 
-class Main:
 
-    def __init__(self, board=ch.Board):
+testChess = te.testChess()
+
+class MainforChessengine:
+
+    def __init__(self, board=testChess.virtualBoard):
         self.board=board
 
     #play human move
     def playHumanMove(self):
+        teller = 0
+        san = testChess.sanMove()
+        self.play = san
         try:
-            print(self.board.legal_moves)
-            print("""To undo your last move, type "undo".""")
             #get human move
-            play = input("Your move: ")
-            
-            if (play=="undo"):
-                self.board.pop()
-                self.board.pop()
-                self.playHumanMove()
-                return
-            
-            self.board.push_san(play)
+            teller +=1
+            print(self.board)
+            self.board.push_san(self.play)
+            return
         except:
             self.playHumanMove()
         
@@ -29,10 +29,13 @@ class Main:
     def playEngineMove(self, maxDepth, color):
         engine = ce.Engine(self.board, maxDepth, color)
         self.board.push(engine.getBestMove())
+        print('play engine move ble tatt i bruk')
         
     def getEngineMove(self, maxDepth, color):
         engine = ce.Engine(self.board, maxDepth, color)
-        print('ChessEngine: ',engine.getBestMove())
+        bestMove=engine.getBestMove()
+        print('ChessEngine: ',bestMove)
+
         
 
     #start a game
@@ -48,17 +51,18 @@ class Main:
             while (self.board.is_checkmate()==False):
                 print("The engine is thinking...")
                 self.playEngineMove(maxDepth, ch.WHITE)
-                print(self.board)
+                print("board1",self.board)
                 self.playHumanMove()
-                print(self.board)
+                print("board2",self.board)
             print(self.board)
             print(self.board.outcome())    
 
         elif color=="w":
             while (self.board.is_checkmate()==False):
-                print(self.board)
+                print("board3",self.board)
                 self.playHumanMove()
-                print(self.board)
+                # self.board.push_san(self.play)
+                print("board4",self.board)
                 print("The engine is thinking...")
                 self.playEngineMove(maxDepth, ch.BLACK)
             print(self.board)
@@ -66,10 +70,15 @@ class Main:
         #reset the board
         self.board.reset
         #start another game
-        self.startGame()
+        start_new_game = input('Nytt parti, "j" for ja og "n" for nei')
+        if start_new_game == 'j':
+            self.startGame()
+        elif start_new_game == 'n':
+            print('Takk for kampen.')
 
-if __name__== '__main__':
-    newBoard= ch.Board()
-    game = Main(newBoard)
-    bruh = game.startGame()
+
+# if __name__== '__main__':
+    # newBoard = ch.Board()
+    # game = MainforChessengine(newBoard)
+    # bruh = game.startGame()
 #create an instance and start a game

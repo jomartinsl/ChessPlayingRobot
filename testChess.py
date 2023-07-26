@@ -4,97 +4,91 @@ import ChessEngine as ce
 import chess
 import time
 import copy
+import Getuci as gu
+
+
+class testChess:
+
+
+    def __init__(self, board=chess.Board()):
+        self.virtualBoard=board
+
+    def sammenlign_og_lagre_svar(self, gammelt_svar, nytt_svar):
+        if gammelt_svar != nytt_svar:
+            return True
+        else:
+            return False
+
+
+    getuci=gu.Getuci()
 
 
 
-
-loop = asyncio.get_event_loop()
-dgt = asyncdgt.auto_connect(loop, ["/dev/ttyACM*"])
-
-
-
-
-nums = {1:"a", 2:"b", 3:"c", 4:"d", 5:"e", 6:"f", 7:"g", 8:"h"}
-def get_uci(board1, board2, who_moved):
-    str_board = str(board1).split("\n")
-    str_board2 = str(board2).split("\n")
-    move = ""
-    flip = False
-    if who_moved == "w":
-        for i in range(8)[::-1]:
-            for x in range(15)[::-1]:   
-                if str_board[i][x] != str_board2[i][x]:
-                    if str_board[i][x] == "." and move == "":
-                        flip = True
-                    move+=str(nums.get(round(x/2)+1))+str(9-(i+1))
-    else:
-        for i in range(8):
-            for x in range(15):
-                if str_board[i][x] != str_board2[i][x]:
-                    if str_board[i][x] == "." and move == "":
-                        flip = True
-                    move+=str(nums.get(round(x/2)+1))+str(9-(i+1))
-    if flip:
-        move = move[2]+move[3]+move[0]+move[1]
-    return move
-
-
-def sammenlign_og_lagre_svar(gammelt_svar, nytt_svar):
-    if gammelt_svar != nytt_svar:
-        return True
-    else:
-        return False
-
-
-color = input('"w" or "b": ')
-
-def uci():
-    teller = 1
-    b_old = loop.run_until_complete(dgt.get_board())
-    B_old = loop.run_until_complete(dgt.get_board())
-    while True:
+    def reads_human_uci(self):
+        moveList = list(self.virtualBoard.legal_moves)
+        
+        loop = asyncio.get_event_loop()
+        dgt = asyncdgt.auto_connect(loop, ["/dev/ttyACM*"])
+        # color = input('"w" or "b": ')
+        teller = 1
+        b_old = loop.run_until_complete(dgt.get_board())
+        B_old = loop.run_until_complete(dgt.get_board())
+        
         while teller%3 !=0:
             b_new = loop.run_until_complete(dgt.get_board())
-            if sammenlign_og_lagre_svar(b_old,b_new) ==True:
+            if self.sammenlign_og_lagre_svar(b_old,b_new) ==True:
                 b_old=b_new
                 teller+=1
+                
+            elif self.sammenlign_og_lagre_svar(B_old,b_old)==False:
+                teller=1
+                
             time.sleep(0.01)
         b_old=B_old
-        uci = get_uci(b_old, b_new, color)
+        uci = self.getuci.get_uci(b_old, b_new)
         if uci!="":
             print(uci)
-            return uci  
-        elif sammenlign_og_lagre_svar(b_old,b_new)==-1:
-            print('Make a move')
-        time.sleep(1)
+            return uci
+    
+        # elif self.sammenlign_og_lagre_svar(b_old,b_new)==-1:
+            # print('Make a move')
+        # time.sleep(1)
         b_old=b_new
 
 
+    def check_var_in_list(self, list, uci):
+        found_match = False
 
-def human_san(uci_move):
-    testUCI = uci_move
-    fra = testUCI[:2]
-    til = testUCI[2:]
-    move=chess.Move(fra,til)
-    viritualBoard=chess.Board()
-    move=move.from_uci(testUCI)
-    san = viritualBoard.san(move)
-    viritualBoard.push_san(san)
-    BSAN=print(san) #Denne skal bli sendt til chess engine
-    return san
+        for var in list:
+            if var == uci:
+                print(f"Match found: {uci}")
+                found_match = True
+                return uci
+        
+        if not found_match:
+            print("Illegal move")
+
+    def boardStatus(self):
+        # print(self.virtualBoard)
+        # print('Legal moves: ', self.virtualBoard.legal_moves)
+        return self.virtualBoard
+    
+
+    def sanMove(self):
+        return self.human_san(self.reads_human_uci())
 
 
-if __name__=='__main__':
-    human_san(uci())
+    def human_san(self,uci_move):
+        self.testUCI = uci_move
+        fra = self.testUCI[:2]
+        til = self.testUCI[2:]
+        move=chess.Move(fra,til)
+        move=move.from_uci(self.testUCI)
+        san = self.virtualBoard.san(move)
+        return san
+
+    if __name__=='__main__':
+        pass
 
 
 
-########################################################
-
-# print(loop.run_until_complete(dgt.get_board()))
-# print(type(loop.run_until_complete(dgt.get_board()))) 
-# board = loop.run_until_complete(dgt.get_board().board_fen())
-# board_.set_fen(board.board_fen())
-# last_move = board_.peek()
-# lsdt_movr_uci = last_move.uci()
-# fen_=board.board_fen()

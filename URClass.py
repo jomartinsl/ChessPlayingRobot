@@ -1,7 +1,7 @@
 
 from rtde_control import RTDEControlInterface as RTDEControl
 from rtde_receive import RTDEReceiveInterface as RTDEReceive
-from Classes.robotiq_gripper_control import RobotiqGripper
+from robotiq_gripper_control import RobotiqGripper
 import time
 import math
 import copy
@@ -35,7 +35,6 @@ class URClass:
         sjakkbrikke[2] = ChessPositionsCalculator.elevate()
         løftArm = self.rtde_c.moveL(sjakkbrikke,0.25,1.2,False)
         
-
 
 
     def moverob(self, a, b):
