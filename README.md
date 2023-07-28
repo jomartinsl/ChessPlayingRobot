@@ -6,8 +6,8 @@ The code for this project is divided in two. We have the chess-python code and u
 ### What the project is currently doing:
 * It can get the state of the DGT board and translate it into SAN and UCI values, which is very usefull from futher code. 
 * The robotarm knows every chess-square, and can move to all of them and pick and place the pieces. The only input needed is the UCI, which has to be devided into two string/variables.
-* Choose degree of difficulty and color ('white' or 'black').
-* Can get a SAN move, put it in the engine, and get a counterplay in the terminal window. 
++ Choose degree of difficulty and color ('white' or 'black').
++ Can get a SAN move, put it in the engine, and get a counterplay in the terminal window. 
 #
 ### What the project needs:
 * It needs a new way to interpret moves. Now it scans the board twice and whatever square the piece lands on will be the move nomatter what. So for instance if I pick up the Night and put it back, the program thinks it's the move and get's traceback. The way the code runs now, is if it's only legal moves without human errors. 
