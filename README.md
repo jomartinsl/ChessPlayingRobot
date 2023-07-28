@@ -19,10 +19,13 @@ The robot is controlled with TCP, tool-centre-point, to every position. The 'mov
 This is where the chessengine talks with the DGT board. The move that is been played will be sent to this class and the engine will make the best or worst move in return. The startGame() function is located in this class. This is where the move you made will be pushed on the viritual chessboard.
 
 ### ```ChessEngine.py```
-This the the part you dont touch. This is the chessengine that calculate the best move, depends on the depth you are playing on. High depth makes the engine better, but also takes longer time to answer with a good move.
+This the part you dont touch. This is the chessengine that calculate the best move, depends on the depth/difficulity you are playing on. High depth makes the engine better, but also takes longer time to answer with a good move.
 
 ### ```testChess.py```
 This class is mainly used for converting the move that has been made, into san-value. For instance if you move the pawn from e2 to e4 it will return the san-value 'e4'. When the dgt-board detects a change in the pattern it will scan the current state and save the previous state. The only task for this class is to return one value which is the **san-value**. There is also declared a viritual chessboard in this class. This chessboard are going to copy every move that is beeing made so it can have track of check's, en passant's, checkmate's and these sorts of things. This comes with the 'import chess' library. 
+
+### ```Getuci.py```
+Converts the board status to 'uci'. It need to compare two status in order for it to return a UCI. This is set to always white in the class, because it's work under progress. The function in this class is named get_uci() and takes two parametre, but in the starting point it took three, and the third was the color ("b" or "w"). I found it a little difficult to pass the color variable into this, but for a better programmer I dont think it will be an issue.
 
 ### ```robotiq_gripper_control.py```
 Necessary for the robot-gripper controll.
