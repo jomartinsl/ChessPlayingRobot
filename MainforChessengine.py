@@ -19,6 +19,7 @@ class MainforChessengine:
             #get human move
             teller +=1
             print(self.board)
+            #Push human move
             self.board.push_san(self.play)
             return
         except:

@@ -80,6 +80,7 @@ class URClass:
         length = 0.058
         chessboard_dict ={}
         list_pos = ['a','b','c','d','e','f','g','h']
+        #Creating a 8x8 chess map
         for i in range(8):
             for j in range(8):
                 postion = f"{list_pos[j]}{i+1}"
