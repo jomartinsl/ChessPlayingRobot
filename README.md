@@ -2,18 +2,18 @@
 
 This project's is about getting a UR5e robotarm to play chess against you. We have a DGT-board and a UR5e robot to disposition.
 The code for this project is divided in two. We have the chess-python code and ur5e-code. 
-
+#
 ### What the project is currently doing:
 It can get the state of the DGT board and translate it into SAN and UCI values, which is very usefull from futher code. 
 The robotarm knows every chess-square, and can move to all of them and pick and place the pieces. The only input needed is the UCI, which has to be devided into two string/variables.
 Choose degree of difficulty and color ('white' or 'black').
 Can get a SAN move, put it in the engine, and get a counterplay in the terminal window. 
-
+#
 ### What the project needs:
 It needs a new way to interpret moves. Now it scans the board twice and whatever square the piece lands on will be the move nomatter what. So for instance if I pick up the Night and put it back, the program thinks it's the move and get's traceback. The way the code runs now, is if it's only legal moves without human errors. 
 Get a way to accept captures, and this is the same issue as the one over. This goes on in the same class, `testChess.py`. 
 Spesial moves: *En passant* and *castling* is not taken into account. 
-
+#
 
 Still working on the gripper and some code in connection with the moving pieces buisness. 
 
