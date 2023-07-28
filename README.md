@@ -1,4 +1,4 @@
-# Chess playing robot - code
+# Chess playing robot
 
 This project's is about getting a UR5e robotarm to play chess against you. We have a DGT-board and a UR5e robot to disposition.
 The code for this project is divided in two. We have the chess-python code and ur5e-code. 
@@ -6,6 +6,9 @@ The code for this project is divided in two. We have the chess-python code and u
 The ```MainTestFile.py``` is where the program runs from. This is where you call the ```URClass.py``` and ```MainforChessengine.py``` and get the program to run.
 
 Under will the different classes be described:
+
+### ```MainTestFile```
+Start's the game
 
 
 ### ```URClass.py```
@@ -21,6 +24,10 @@ This the the part you dont touch. This is the chessengine that calculate the bes
 ### ```testChess.py```
 This class is mainly used for converting the move that has been made, into san-value. For instance if you move the pawn from e2 to e4 it will return the san-value 'e4'. When the dgt-board detects a change in the pattern it will scan the current state and save the previous state. The only task for this class is to return one value which is the san-value.
 
+### ```robotiq_gripper_control.py```
+Necessary for the robot-gripper controll.
+### ```robotiq_preamble.py```
+Necessary for the UR5e gripper.
 
 
 
