@@ -24,8 +24,10 @@ As in the topic "What the project needs", this section is pretty similar.
 
 #
 
-Still working on the gripper and some code in connection with the moving pieces buisness. 
 
+
+## Classes info
+Here's some information about the different classes, and about what their purpose is. 
 
 The ```MainTestFile.py``` is where the program runs from. This is where you call the ```URClass.py``` and ```MainforChessengine.py``` and get the program to run.
 
