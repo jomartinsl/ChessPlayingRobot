@@ -5,7 +5,7 @@ The code for this project is divided in two. We have the chess-python code and u
 
 The ```MainTestFile.py``` is where the program runs from. This is where you call the ```URClass.py``` and ```MainforChessengine.py``` and get the program to run.
 
-Under will the different classes be described:
+Under the different classes is beeing described:
 
 ### ```MainTestFile```
 Start's the game
