@@ -3,6 +3,12 @@
 ##### This project's is about getting a UR5e robotarm to play chess against you. We have a DGT-board and a UR5e robot to disposition.
 ##### The code for this project is divided in two. We have the chess-python code and ur5e-code. 
 #
+### Program's I've been using
+* Python
+* Fusion 360
+* VMware Workstation 16 Player
+* Bambu Studio
+#
 ### What the project is currently doing:
 It can almost play chess by itself with a human opponent. 
 * It can get the state of the DGT board and translate it into SAN and UCI values, which is very usefull from futher code. 
@@ -14,7 +20,7 @@ It can almost play chess by itself with a human opponent.
 * It needs a new way to interpret moves. It scans when a piece is picked up, and scans again when its put down. When it's put down, it breaks the while loop and returns the move value. We need something that doesn't return the move immediately after a piece is put down or back to orgin. So for instance if I pick up the Night and put it back, the program thinks it's the move and get's traceback. The way the code runs now, it only accept's legal moves and not illegal. 
 * Get a way to accept captures, and this is the same issue as the one over. This goes on in the same class, `testChess.py`. 
 * Spesial moves: *En passant* and *castling* is not taken into account.
-* A functional gripper. The normal buildin gripper workes perfectly fine, but the problem is that it would ruin the pieces in the long term. Cause the pieces is different in size it has to close enought to pick up the smallest piece.
+* A functional gripper. The normal buildin gripper workes perfectly fine, but the problem is that it would ruin the pieces in the long term. Cause the pieces is different in size it has to close enought to pick up the smallest piece. So I'm currently trying to come up with an idea of a small enough (so it doesn't bump into other pieces at the board) and strong enough gripper so the piece wont lose it's grip. 
 #
 ### What I'm thinking further
 As in the topic "What the project needs", this section is pretty similar.
@@ -22,6 +28,7 @@ As in the topic "What the project needs", this section is pretty similar.
 + It needs safety parametre, so it doesn't bump into anything or damage anyone.
 + When illegal moves is preformed, the robot has to signilize someway that the move is illegal, maybe pointing at a piece of paper that says illegal. Cause in my experience in chessplaying at boards, it's not always easy to see that you actually did a illegal move, especially if you are under pressure and have limited time to finish the move. 
 
+  
 #
 
 
