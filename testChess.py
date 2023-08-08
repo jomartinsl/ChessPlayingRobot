@@ -15,7 +15,6 @@ class testChess:
                                 #This makes it posible to get a overview over the legal moves and these sorts of thing on the way. 
 
     def sammenlign_og_lagre_svar(self, gammelt_svar, nytt_svar): #Compares two inputs. This is to make the counter go up, since we want it to break the while loop after 2 itterations.
-
         if gammelt_svar != nytt_svar:
             return True
         else:
@@ -25,9 +24,40 @@ class testChess:
     getuci=gu.Getuci()
 
 
+    def get_safe_move(self, input1, input2): #Wait's 3 seconds before getting the UCI
+        self.input1 = input1
+        self.input2 = input2
+        loop = asyncio.get_event_loop()
+        dgt = asyncdgt.auto_connect(loop, ["/dev/ttyACM*"])
+        # b_old = loop.run_until_complete(dgt.get_board()) 
+        self.input1 = loop.run_until_complete(dgt.get_board()) 
+
+        while True:
+            last_change_time = time.time()
+            while True:
+                self.input2 = loop.run_until_complete(dgt.get_board()) 
+                last_input2 = self.input2
+
+                if self.input1 != last_input2:
+                    last_change_time = time.time()
+                    self.input1 = last_input2
+                
+                #Wait's three seconds before confirming the move.
+                elif self.input1==last_input2 and time.time() - last_change_time >= 3: 
+                    #Checks if the piece has been in the same place for 3 seconds or more
+                    boardStatusLast = loop.run_until_complete(dgt.get_board()) 
+                    return boardStatusLast
+            
+                
+    def only_the_move_value(self):
+        pass
+
+        
+
+
+
 
     def reads_human_uci(self): #Returns UCI. 
-        
         loop = asyncio.get_event_loop()
         dgt = asyncdgt.auto_connect(loop, ["/dev/ttyACM*"]) #Gets the board status. 
         # color = input('"w" or "b": ')
@@ -35,32 +65,50 @@ class testChess:
         # Get board twice
         b_old = loop.run_until_complete(dgt.get_board()) 
         B_old = loop.run_until_complete(dgt.get_board())
-        
+
         while teller%3 !=0: #Ends when player gives two different board states.
             b_new = loop.run_until_complete(dgt.get_board())
             if self.sammenlign_og_lagre_svar(b_old,b_new) ==True:
                 b_old=b_new
                 teller+=1
                 
-            elif self.sammenlign_og_lagre_svar(B_old,b_old)==False: #The point of this was: if someone place the piece they 
-                #picked up back to the same position. Because this will act as if it was a sincire move. But right now it doesnt work.
+            elif self.sammenlign_og_lagre_svar(B_old,b_old)==False: #This compares the two boards, old and new, and if there is a difference, the whileloop will run once.
+                # When the board is changed, for instance: a piece has been picked up, it runs through the loop once.
                 teller=1
                 
             time.sleep(0.01)
         b_old=B_old
-        uci = self.getuci.get_uci(b_old, b_new)#uses class Getuci.py to calculate the uci
+        uci = self.getuci.get_uci(b_old, self.get_safe_move(b_old,b_new))#uses class Getuci.py to calculate the uci. 
+        #Also it takes in the  function get_safe_move ^. This makes it posible to slide the pieces. 
         if uci!="":
             print(uci)
             return uci
         b_old=b_new
 
 
-    
 
-    def boardStatus(self):
-        # print(self.virtualBoard)
-        # print('Legal moves: ', self.virtualBoard.legal_moves)
-        return self.virtualBoard
+    def the_robot_moves(self):
+        loop = asyncio.get_event_loop()
+        dgt = asyncdgt.auto_connect(loop, ["/dev/ttyACM*"]) #Gets the board status. 
+        firstMove = loop.run_until_complete(dgt.get_board()) 
+        middleMove=loop.run_until_complete(dgt.get_board())
+        teller = 0
+        Done = False
+        while not Done:
+            lastMove = loop.run_until_complete(dgt.get_board()) 
+            if self.sammenlign_og_lagre_svar(firstMove,lastMove) == True:
+                firstMove= lastMove
+                teller+=1
+                if teller>=2:
+                    print(teller)
+                    Done=True
+                
+                
+        
+
+
+
+
     
 
     def sanMove(self): 
@@ -68,7 +116,7 @@ class testChess:
         return self.human_san(self.reads_human_uci())
 
 
-    def human_san(self,uci_move):
+    def human_san(self,uci_move): #Takes in the UCI and transform it to SAN value
         self.testUCI = uci_move
         fra = self.testUCI[:2] # Splits the uci-value into two, so we can put it in the move variable. The chess.Move() takes in two inputs, from-square and to-square.
         til = self.testUCI[2:]

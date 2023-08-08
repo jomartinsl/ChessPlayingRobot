@@ -12,15 +12,14 @@ class MainforChessengine:
 
     #play human move
     def playHumanMove(self):
-        teller = 0
         san = testChess.sanMove()
         self.play = san
+
         try:
-            #get human move
-            teller +=1
-            print(self.board)
+            #Get human move
+            # print(self.board)
             #Push human move
-            self.board.push_san(self.play)
+            self.board.push_san(self.play) 
             return
         except:
             self.playHumanMove()
@@ -36,6 +35,7 @@ class MainforChessengine:
         engine = ce.Engine(self.board, maxDepth, color)
         bestMove=engine.getBestMove()
         print('ChessEngine: ',bestMove)
+        return bestMove
 
         
 
@@ -52,21 +52,25 @@ class MainforChessengine:
             while (self.board.is_checkmate()==False):
                 print("The engine is thinking...")
                 self.playEngineMove(maxDepth, ch.WHITE)
-                print("board1",self.board)
+                print(self.board)
                 self.playHumanMove()
-                print("board2",self.board)
-            print(self.board)
+                print(self.board)
+                testChess.the_robot_moves() #This is supposed to allow the robotarm to move freely without beeing interupted by any chessrules.
+            # print(self.board)
             print(self.board.outcome())    
 
         elif color=="w":
             while (self.board.is_checkmate()==False):
-                print("board3",self.board)
+                print(self.board)
                 self.playHumanMove()
                 # self.board.push_san(self.play)
-                print("board4",self.board)
+                print(self.board)
                 print("The engine is thinking...")
                 self.playEngineMove(maxDepth, ch.BLACK)
-            print(self.board)
+                print(self.board)
+                testChess.the_robot_moves()
+
+            # print(self.board)
             print(self.board.outcome())
         #reset the board
         self.board.reset
