@@ -1,7 +1,7 @@
 # Chess playing robot
 
 ##### This project's is about getting a UR5e robotarm to play chess against you. We have a DGT-board and a UR5e robot to disposition.
-##### The code for this project is divided in two. We have the chess-python code and ur5e-code. 
+##### The code for this project is divided in two. We have the `chess-python` code and `ur5e-code`. 
 #
 ### Program's I've been using
 * Python
