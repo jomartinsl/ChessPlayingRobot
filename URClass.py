@@ -2,12 +2,15 @@
 from rtde_control import RTDEControlInterface as RTDEControl
 from rtde_receive import RTDEReceiveInterface as RTDEReceive
 from robotiq_gripper_control import RobotiqGripper
-import time
-import math
 import copy
 from CalculatePositions import ChessPositionsCalculator
+import testChess as tc
+import Getuci
+
+
 
 class URClass:
+    getuci = Getuci.Getuci()
     def __init__(self):
         self.rtde_c = RTDEControl("172.31.1.144")
         self.rtde_r = RTDEReceive("172.31.1.144")
@@ -23,6 +26,28 @@ class URClass:
     def moveSimple(self, pos):
         idlePos = self.rtde_c.moveL(pos)
         print('Hello move simple')
+
+
+#___________________________________________________________________________________________
+    def get_uci_to_split(self, uci): # Takes the uci string and declares it in two functions.
+        #Additionaly i need the color, so i know which player i must find the UCI for. 
+        self.uci = uci
+
+        self.a(self.uci) #Startsquare the robot will move piece from! 
+        #How to make the urclass eat each of these, a and b- function's? 
+        self.b(self.uci)#Endsquare the robot will move piece to!
+
+    def a(self, startUCI): #Splits the uci to get start square
+        self.startuci=startUCI
+        fra = self.startuci[:2]
+        return fra
+    
+    def b(self,sluttUCI):#Splits the uci to get end square
+        self.sluttuci = sluttUCI
+        til= self.sluttuci[2:]
+        return til
+#___________________________________________________________________________________________
+
 
 
     def walking():
@@ -94,6 +119,9 @@ class URClass:
         pos_a1 = chessboard_dict.get(brikkePos)
         print(pos_a1)
         return pos_a1
+    
+    if __name__ == '__main__':
+        pass
 
 
 

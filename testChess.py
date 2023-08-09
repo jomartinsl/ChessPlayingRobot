@@ -72,8 +72,8 @@ class testChess:
                 b_old=b_new
                 teller+=1
                 
-            elif self.sammenlign_og_lagre_svar(B_old,b_old)==False: #This compares the two boards, old and new, and if there is a difference, the whileloop will run once.
-                # When the board is changed, for instance: a piece has been picked up, it runs through the loop once.
+            elif self.sammenlign_og_lagre_svar(B_old,b_old)==False: #This compares the two boards, old and new, and if there is a difference, the whileloop will loop once!.
+                # When the board is changed, for instance: a piece has been picked up, it loop's once.
                 teller=1
                 
             time.sleep(0.01)
@@ -81,7 +81,7 @@ class testChess:
         uci = self.getuci.get_uci(b_old, self.get_safe_move(b_old,b_new))#uses class Getuci.py to calculate the uci. 
         #Also it takes in the  function get_safe_move ^. This makes it posible to slide the pieces. 
         if uci!="":
-            print(uci)
+            # print(uci) #Print's out the uci, 'b2b4'
             return uci
         b_old=b_new
 
@@ -100,13 +100,12 @@ class testChess:
                 firstMove= lastMove
                 teller+=1
                 if teller>=2:
-                    print(teller)
                     Done=True
                 
-                
-        
-
-
+    def fen(self):
+        loop = asyncio.get_event_loop()
+        dgt = asyncdgt.auto_connect(loop, ["/dev/ttyACM*"]) #Gets the board status. 
+        return loop.run_until_complete(dgt.get_board()) 
 
 
     
@@ -116,6 +115,7 @@ class testChess:
         return self.human_san(self.reads_human_uci())
 
 
+#NB!: Need's to check up against legal moves before executing
     def human_san(self,uci_move): #Takes in the UCI and transform it to SAN value
         self.testUCI = uci_move
         fra = self.testUCI[:2] # Splits the uci-value into two, so we can put it in the move variable. The chess.Move() takes in two inputs, from-square and to-square.
@@ -123,7 +123,20 @@ class testChess:
         move=chess.Move(fra,til)
         move=move.from_uci(self.testUCI)
         san = self.virtualBoard.san(move) # This is the san value which we use to feed the chess engine.
+        print(f'testChess virtualboard:\n{self.virtualBoard}')
         return san
+    
+
+
+    def a(self, startUCI): #Splits the uci to get start square
+        self.startuci=startUCI
+        fra = self.startuci[:2]
+        return fra
+    
+    def b(self,sluttUCI):#Splits the uci to get end square
+        self.sluttuci = sluttUCI
+        til= self.sluttuci[2:]
+        return til
 
     if __name__=='__main__':
         pass
