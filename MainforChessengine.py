@@ -16,14 +16,16 @@ class MainforChessengine:
     #play human move
     def playHumanMove(self):
         san = testChess.sanMove()
+        legal_moves = self.board.legal_moves
         self.play = san
-
+        
+            
+        
         try:
             #Get human move
             # print(self.board)
             #Push human move
             self.board.push_san(self.play)
-            
             return
         except:
             self.playHumanMove()
@@ -32,7 +34,7 @@ class MainforChessengine:
     #play engine move
     def playEngineMove(self, maxDepth, color):
         engine = ce.Engine(self.board, maxDepth, color)
-        self.board.push(engine.getBestMove())
+        self.board.push(engine.getBestMove()) 
         
     def getEngineMove(self, maxDepth, color): #This return's a UCI!
         engine = ce.Engine(self.board, maxDepth, color)
@@ -54,27 +56,30 @@ class MainforChessengine:
         if color=="b":
             while (self.board.is_checkmate()==False):
                 print("The engine is thinking...")
+                uciForRobot = self.getEngineMove(maxDepth, ch.WHITE) 
+                a=testChess.a(str(uciForRobot)) #Split's uci into two pieces and grabs the start square
+                b=testChess.b(str(uciForRobot))
+                urclass.moverob(a,b,'b')
                 self.playEngineMove(maxDepth, ch.WHITE)
                 print(self.board)
                 self.playHumanMove()
                 print(self.board)
-                testChess.the_robot_moves() #Let's the robot move a piece for white
-            print(self.board.outcome())    
+            #print(self.board.outcome())    
 
-        elif color=="w":
+        elif color=="w": #If the human player is 'white', the robot will play as black, and this is the black playerside.
             while (self.board.is_checkmate()==False):
-                print(self.board)
+                #print(self.board)
                 self.playHumanMove()
                 print(f'MainforChessengine w1:\n{self.board}')
                 uciForRobot = self.getEngineMove(maxDepth, ch.BLACK) #This is the UCI that has to be split up and fed to the robotarm!!
-                print(uciForRobot)
+                # print(uciForRobot)
                 print("The engine is thinking...")
                 self.playEngineMove(maxDepth, ch.BLACK)
-                a=testChess.a(str(uciForRobot))
+                a=testChess.a(str(uciForRobot)) #Split's uci into two pieces and grabs the start square
                 b=testChess.b(str(uciForRobot))
-                print(f'a: {a} og b: {b}')
+                # print(f'a: {a} og b: {b}')
                 print(f'MainforChessengine w2:\n{self.board}')
-                urclass.moverob(a,b) # Takes in from- and to-square and the robotarm preforms the movement
+                urclass.moverob(a,b,'w') # Takes in from- and to-square and the robotarm preforms the movement
                 testChess.the_robot_moves() #Let's the robot move a piece for black
                 
                 

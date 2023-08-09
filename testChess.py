@@ -82,7 +82,11 @@ class testChess:
         #Also it takes in the  function get_safe_move ^. This makes it posible to slide the pieces. 
         if uci!="":
             # print(uci) #Print's out the uci, 'b2b4'
-            return uci
+            if len(uci)>5:
+                print('For lang string')
+            else:
+                return uci 
+            
         b_old=b_new
 
 
@@ -112,18 +116,20 @@ class testChess:
 
     def sanMove(self): 
         # returns the final SAN
-        return self.human_san(self.reads_human_uci())
+        return self.human_uci_to_san(self.reads_human_uci())
 
 
 #NB!: Need's to check up against legal moves before executing
-    def human_san(self,uci_move): #Takes in the UCI and transform it to SAN value
+    def human_uci_to_san(self,uci_move): #Takes in the UCI and transform it to SAN value
         self.testUCI = uci_move
+        if len(self.testUCI)>4 or self.testUCI==None:
+            return print('Flytt tilbake din piece')
         fra = self.testUCI[:2] # Splits the uci-value into two, so we can put it in the move variable. The chess.Move() takes in two inputs, from-square and to-square.
         til = self.testUCI[2:]
         move=chess.Move(fra,til)
         move=move.from_uci(self.testUCI)
         san = self.virtualBoard.san(move) # This is the san value which we use to feed the chess engine.
-        print(f'testChess virtualboard:\n{self.virtualBoard}')
+        # print(f'testChess virtualboard:\n{self.virtualBoard}') # Virtual board, can be usefull to check out if any questions
         return san
     
 
