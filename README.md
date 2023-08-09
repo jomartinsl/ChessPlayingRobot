@@ -11,13 +11,13 @@
 #
 ### What the project is currently doing:
 It can almost play chess by itself with a human opponent. 
-* It can get the state of the DGT board and translate it into SAN and UCI values, which is very usefull from futher code. 
+* It can get the state of the DGT board and translate it into SAN and UCI values, which is very usefull to push a move or give instructions to robotarm. 
 * The robotarm knows every chess-square, and can move to all of them and pick and place the pieces. The only input needed is the UCI, which has to be devided into two string/variables.
 + Choose degree of difficulty and color ('white' or 'black').
-+ Can get a SAN move, put it in the engine, and get a counterplay in the terminal window. 
++ Can get a SAN move, put it in the engine, and get a counterplay in the terminal window.
++ The robotarm can pick up and place a chess piece at the best possible option.
 #
 ### What the project needs:
-* It needs a new way to interpret moves. It scans when a piece is picked up, and scans again when its put down. When it's put down, it breaks the while loop and returns the move value. We need something that doesn't return the move immediately after a piece is put down or back to orgin. So for instance if I pick up the Night and put it back, the program thinks it's the move and get's traceback. The way the code runs now, it only accept's legal moves and not illegal. 
 * Get a way to accept captures, and this is the same issue as the one over. This goes on in the same class, `testChess.py`. 
 * Spesial moves: *En passant* and *castling* is not taken into account.
 * A functional gripper. The normal buildin gripper workes perfectly fine, but the problem is that it would ruin the pieces in the long term. Cause the pieces is different in size it has to close enought to pick up the smallest piece. So I'm currently trying to come up with an idea of a small enough (so it doesn't bump into other pieces at the board) and strong enough gripper so the piece wont lose it's grip. 
