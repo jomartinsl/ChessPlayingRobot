@@ -12,7 +12,7 @@
 ### What the project is currently doing:
 It can almost play chess by itself with a human opponent. 
 * It can get the state of the DGT board and translate it into SAN and UCI values, which is very usefull to push a move or give instructions to robotarm. 
-* The robotarm knows every chess-square, and can move to all of them and pick and place the pieces. The only input needed is the UCI, which has to be devided into two string/variables.
+* The robotarm knows every chess-square, and can move to all of them and pick and place the pieces. The only input needed is the UCI, `b2b4`, which has to be devided into two variables.
 + Choose degree of difficulty and color ('white' or 'black').
 + Can get a SAN move, put it in the engine, and get a counterplay in the terminal window.
 + The robotarm can pick up and place a chess piece at the best possible option.
@@ -24,9 +24,9 @@ It can almost play chess by itself with a human opponent.
 #
 ### What I'm thinking further
 As in the topic "What the project needs", this section is pretty similar.
-+ I'm thinking a gripper, that doesn't ruin og damage the chess pieces.
-+ It needs safety parametre, so it doesn't bump into anything or damage anyone.
-+ When illegal moves is preformed, the robot has to signilize someway that the move is illegal, maybe pointing at a piece of paper that says illegal. Cause in my experience in chessplaying at boards, it's not always easy to see that you actually did a illegal move, especially if you are under pressure and have limited time to finish the move. 
++ A gripper is nessesary, that can pick up any piece, so that it doesn't ruin og damage the chess pieces.
++ It needs safety parametre for the robot arm, so it doesn't bump into anything or damage anyone.
++ When illegal moves is preformed, the robot has to signilize someway that the move is illegal, maybe pointing at a piece of paper that says illegal, or print on the screen "Illegal move". Cause in my experience in chessplaying at boards, it's not always easy to see that you actually did a illegal move, especially if you are under pressure and have limited time to finish the move. 
 
   
 #
