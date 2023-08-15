@@ -12,9 +12,8 @@
 ### What the project is currently doing:
 It can almost play chess by itself with a human opponent. 
 * It can get the state of the DGT board and translate it into SAN and UCI values, which is very usefull to push a move or give instructions to robotarm. 
-* The robotarm knows every chess-square, and can move to all of them and pick and place the pieces. The only input needed is the UCI, `b2b4`, which has to be devided into two variables.
-+ Choose degree of difficulty and color ('white' or 'black').
-+ Can get a SAN move, put it in the engine, and get a counterplay in the terminal window.
+* The robotarm knows every chess-square, and can move to all of them and pick and place the pieces. The only input needed is the UCI, `b2b4`, which is beeing devided into two variables by two different function's.
++ Choose degree of difficulty (2 --> 10) and color ('white' or 'black').
 + The robotarm can pick up and place a chess piece at the best possible option.
 #
 ### What the project needs:
