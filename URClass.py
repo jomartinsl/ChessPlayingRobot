@@ -3,7 +3,6 @@ from rtde_control import RTDEControlInterface as RTDEControl
 from rtde_receive import RTDEReceiveInterface as RTDEReceive
 from robotiq_gripper_control import RobotiqGripper
 import copy
-# from CalculatePositions import ChessPositionsCalculator
 import testChess as tc
 import Getuci
 
@@ -17,11 +16,13 @@ class URClass:
         self.gripper = RobotiqGripper(self.rtde_c)
         self.gripper.set_force(50)  # from 0 to 100 %
         self.gripper.set_speed(100)  # from 0 to 100 %
-        self.speed = 0.1
+        self.speed = 0.16
         self.acceleration = 0.1
-        self.gripper.move(50)
+        self.gripper.move(30)       #Tilbake og frem     Venstre og høyre       Ned og opp          Rx                  Ry                      Rz
         self.standardPosition = [-0.01748171324078468, 0.4066080009731705, 0.19681733919878186, 3.141500465469358, 3.7361539352121305e-05, 4.294447431824948e-06]
         self.chess_orgin = [-0.2124817132407847, 0.5016080009731705, 0.19681733919878186, 3.141500465469358, 3.7361539352121305e-05, 4.294447431824948e-06]
+
+
     
     def moveSimple(self, pos):
         idlePos = self.rtde_c.moveL(pos)
@@ -40,102 +41,72 @@ class URClass:
 
 
 
-    def carefull(self):
-        self.gripper.move(100)
-        sjakkbrikke = self.getPosition('a1')
-        sjakkbrikke[2] = self.elevate()
-        løftArm = self.rtde_c.moveL(sjakkbrikke,0.25,1.2,False)
         
 
 
     def moverob(self, a, b, color):
         self.color = color
-        self.gripper.move(50)
+        self.gripper.move(30)
         self.startSquare = a
         self.endSquare = b
-        idlePos = self.rtde_c.moveL(self.startPosition(),0.25,1.2,False)
+        idlePos = self.rtde_c.moveL(self.startPosition(),self.speed,1.2,False)
         if self.color=='w':
             sjakkbrikke = self.getPositionForBlack(self.startSquare)
         elif self.color == 'b':
             sjakkbrikke = self.getPositionForWhite(self.startSquare)
-        GårTilPosisjon = self.rtde_c.moveL(sjakkbrikke,0.25,1.2,False)
+        GårTilPosisjon = self.rtde_c.moveL(sjakkbrikke,self.speed,1.2,False)
         sjakkbrikke[2] = self.lower()
-        senkArm = self.rtde_c.moveL(sjakkbrikke,0.25,1.2,False)
-        self.gripper.move(10)
+        senkArm = self.rtde_c.moveL(sjakkbrikke,self.speed,1.2,False)
+        self.gripper.move(8)
         sjakkbrikke[2]=self.elevate()
-        løftArm = self.rtde_c.moveL(sjakkbrikke,0.25,1.2,False)
+        løftArm = self.rtde_c.moveL(sjakkbrikke,self.speed,1.2,False)
         if self.color == 'w':
             sjakkbrikke = self.getPositionForBlack(self.endSquare)
         elif self.color == 'b':
             sjakkbrikke = self.getPositionForWhite(self.endSquare)
-        GårTilPosisjon = self.rtde_c.moveL(sjakkbrikke,0.25,1.2,False)
-        løftArmIgjen = copy.deepcopy(sjakkbrikke) #Deepcopy
-        sjakkbrikke[2] = self.lower()
-        senkArm = self.rtde_c.moveL(sjakkbrikke,0.25,1.2,False)
-        self.gripper.move(50)
-        
-        GårTilPosisjon = self.rtde_c.moveL(løftArmIgjen,0.25,1.2,False)
-        idlePos = self.rtde_c.moveL(self.startPosition())
+        GårTilPosisjon = self.rtde_c.moveL(sjakkbrikke,self.speed,1.2,False)
+        sjakkbrikke[2] = self.lower()+0.0015
+        senkArm = self.rtde_c.moveL(sjakkbrikke,self.speed,1.2,False)
+        self.gripper.move(30)
+        sjakkbrikke[2] = self.elevate()
+        GårTilPosisjon = self.rtde_c.moveL(sjakkbrikke,self.speed,1.2,False)
+        idlePos = self.rtde_c.moveL(self.startPosition(),self.speed,1.2,False)
 
    
     def startPosition(self):
-        standardPosition = [-0.01748171324078468, 0.4066080009731705, 0.19681733919878186, 3.141500465469358, 3.7361539352121305e-05, 4.294447431824948e-06]
+        standardPosition = [0.3801738000939013, -0.01797368394369248, 0.19634970458215878, -2.188840390553494, 2.2278318427863804, 0.02402116883245557]
         return standardPosition
 
+    #Position's the robot in startposition whenever a new game start's
+    def startPositionStartChess(self):
+        self.standardPosition = [0.3801738000939013, -0.01797368394369248, 0.19634970458215878, -2.188840390553494, 2.2278318427863804, 0.02402116883245557]
+        idlePos = self.rtde_c.moveL(self.standardPosition,self.speed,1.2,False) 
     
 
     def lower(self): #Universal, you can adjust the height without disturping the other index
-        chess_orgin = [-0.2124817132407847, 0.5016080009731705, 0.19681733919878186, 3.141500465469358, 3.7361539352121305e-05, 4.294447431824948e-06]
-        gripperheight = chess_orgin[2]
-        gripperheight-=0.10
-        return gripperheight
+        #Ned for å plukke opp piece 
+        lower = 0.13041471525894038 - 0.123 #Trekker fra slik at armen ikke treffer brettet eller pieces, 0.27 er standardhøyden, og -0.13 er hvor mye den går ned
+        # print('lower 1: ', lower)
+        return lower #Returns the subtrakted height. 
         
     
     def elevate(self):
-        self.chess_orgin = [-0.2124817132407847, 0.5016080009731705, 0.19681733919878186, 3.141500465469358, 3.7361539352121305e-05, 4.294447431824948e-06]
-        # self.chess_orgin[2]+=0.11 #Lifts the arm up 11 cm
-        return 0.19681733919878186
-
-    def a1_field_hover(self):
-        self.chess_orgin = [-0.257817132407847, 0.4816080009731705, 0.19681733919878186, 3.141500465469358, 3.7361539352121305e-05, 4.294447431824948e-06]
-        hover = self.rtde_c.moveL(self.chess_orgin,0.25,1.2,False)
-        # self.chess_orgin[0] -= 0.045 # høyre og venstre
-        # self.chess_orgin[1] -= 0.020 # frem og tilbake
-        self.chess_orgin[2] -= 0.090 #opp og ned
-        # return self.chess_orgin
-        senkArm = self.rtde_c.moveL(self.chess_orgin,0.25,1.2,False)
+        #Løfter armen med 10 cm #Lift's the robotarm 10 cm up
+        #Løfte piece opp
+        elevate = -0.0004147152589403791+0.123
+        return elevate
 
 
-    
+    #This gets the positions if the robotarm plays as 'white'
     def getPositionForWhite(self, brikkePos):
-        self.chess_orgin = [-0.257817132407847, 0.4816080009731705, 0.19681733919878186, 3.141500465469358, 3.7361539352121305e-05, 4.294447431824948e-06]
-        self.length = 0.055
+        self.chess_orgin = [0.3875662750671822, 0.17044196628472913, 0.13041471525894038, -2.1487047112310784, 2.255092571981374, 0.02006373937944305]
+        self.length = 0.05525
         self.chessboard_dict ={}
         list_pos = ['a','b','c','d','e','f','g','h']
         #Creating a 8x8 chess map
         for i in range(8):
             for j in range(8):
-                postion = f"{list_pos[j]}{i+1}"
-                x = self.chess_orgin[0]+j*self.length
-                y = self.chess_orgin[1]+i*self.length
-                z = self.chess_orgin[2]
-                Rx= self.chess_orgin[3]
-                Ry= self.chess_orgin[4]
-                Rz= self.chess_orgin[5]
-                self.chessboard_dict[postion] = [x,y,z,Rx,Ry,Rz]
-        pos_a1 = self.chessboard_dict.get(brikkePos)
-        # print('this is pos_a1: ',pos_a1) #Print's the [n-1...n+1] for the positions for the different squares 
-        return pos_a1
-    
-    def getPositionForBlack(self, brikkePos):
-        self.chess_orgin = [-0.257817132407847, 0.4816080009731705, 0.19681733919878186, 3.141500465469358, 3.7361539352121305e-05, 4.294447431824948e-06]
-        self.length = 0.055
-        self.chessboard_dict ={}
-        list_pos = ['a','b','c','d','e','f','g','h']
-        #Creating a 8x8 chess map
-        for i in range(8):
-            for j in range(8):
-                postion = f"{list_pos[7-i]}{8-j}"
+                postion = f"{list_pos[i]}{j+1}"
                 x = self.chess_orgin[0]+i*self.length
                 y = self.chess_orgin[1]+j*self.length
                 z = self.chess_orgin[2]
@@ -144,8 +115,41 @@ class URClass:
                 Rz= self.chess_orgin[5]
                 self.chessboard_dict[postion] = [x,y,z,Rx,Ry,Rz]
         pos_a1 = self.chessboard_dict.get(brikkePos)
-        # print('this is pos_a1: ',pos_a1) #Print's the [n-1...n+1] for the positions for the different squares 
         return pos_a1
     
+    #This gets the positions if the robotarm plays as 'black'
+    def getPositionForBlack(self, brikkePos):
+        self.chess_orgin = [0.3875662750671822, 0.17044196628472913, 0.13041471525894038, -2.1487047112310784, 2.255092571981374, 0.02006373937944305]
+        
+        self.length = 0.055
+        self.chessboard_dict ={}
+        list_pos = ['a','b','c','d','e','f','g','h']
+        #Creating a 8x8 chess map
+        for i in range(8):
+            for j in range(8):
+                postion = f"{list_pos[7-i]}{8-j}"
+                x = self.chess_orgin[0]+j*self.length
+                y = self.chess_orgin[1]-i*self.length
+                z = self.chess_orgin[2]
+                Rx= self.chess_orgin[3]
+                Ry= self.chess_orgin[4]
+                Rz= self.chess_orgin[5]
+                self.chessboard_dict[postion] = [x,y,z,Rx,Ry,Rz]
+        pos_a1 = self.chessboard_dict.get(brikkePos)
+        return pos_a1
+
+    def testingRobmovement(self):
+        startpos = [0.3875662750671822, 0.17044196628472913, 0.13041471525894038, -2.1487047112310784, 2.255092571981374, 0.02006373937944305]
+        self.rtde_c.moveL(startpos,self.speed,1.2,False)
+        startpos[0]+=0.1
+        self.rtde_c.moveL(startpos,self.speed,1.2,False)
+        startpos[0]-=0.1
+        self.rtde_c.moveL(startpos,self.speed,1.2,False)
+        input('hvilken retning???')
+        startpos[1]+=0.1
+        self.rtde_c.moveL(startpos,self.speed,1.2,False)
+        startpos[1]-=0.1
+        self.rtde_c.moveL(startpos,self.speed,1.2,False)
+        input('hvilken retning???')
     if __name__ == '__main__':
         pass

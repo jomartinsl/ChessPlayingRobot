@@ -43,7 +43,7 @@ class testChess:
                     self.input1 = last_input2
                 
                 #Wait's three seconds before confirming the move.
-                elif self.input1==last_input2 and time.time() - last_change_time >= 3: 
+                elif self.input1==last_input2 and time.time() - last_change_time >= 1.5: 
                     #Checks if the piece has been in the same place for 3 seconds or more
                     boardStatusLast = loop.run_until_complete(dgt.get_board()) 
                     return boardStatusLast
@@ -60,7 +60,6 @@ class testChess:
     def reads_human_uci(self): #Returns UCI. 
         loop = asyncio.get_event_loop()
         dgt = asyncdgt.auto_connect(loop, ["/dev/ttyACM*"]) #Gets the board status. 
-        # color = input('"w" or "b": ')
         teller = 1
         # Get board twice
         b_old = loop.run_until_complete(dgt.get_board()) 
@@ -96,6 +95,7 @@ class testChess:
         dgt = asyncdgt.auto_connect(loop, ["/dev/ttyACM*"]) #Gets the board status. 
         firstMove = loop.run_until_complete(dgt.get_board()) 
         middleMove=loop.run_until_complete(dgt.get_board())
+        
         teller = 0
         Done = False
         while not Done:
@@ -105,6 +105,7 @@ class testChess:
                 teller+=1
                 if teller>=2:
                     Done=True
+                    return True
                 
     def fen(self):
         loop = asyncio.get_event_loop()
@@ -122,8 +123,6 @@ class testChess:
 #NB!: Need's to check up against legal moves before executing
     def human_uci_to_san(self,uci_move): #Takes in the UCI and transform it to SAN value
         self.testUCI = uci_move
-        if len(self.testUCI)>4 or self.testUCI==None:
-            return print('Flytt tilbake din piece')
         fra = self.testUCI[:2] # Splits the uci-value into two, so we can put it in the move variable. The chess.Move() takes in two inputs, from-square and to-square.
         til = self.testUCI[2:]
         move=chess.Move(fra,til)
@@ -143,6 +142,15 @@ class testChess:
         self.sluttuci = sluttUCI
         til= self.sluttuci[2:]
         return til
+    
+    def robotmakesmoveDone(self, firstBoard, secondBaord):
+        self.firstBoard = firstBoard
+        self.secondboard = secondBaord
+        uci = self.getuci.get_uci(self.firstBoard,self.secondboard)
+        san = self.human_uci_to_san(uci)
+        self.virtualBoard.push_san(san)
+        print(self.virtualBoard.push_san(san))
+    
 
     if __name__=='__main__':
         pass
