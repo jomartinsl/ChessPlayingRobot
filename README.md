@@ -20,13 +20,13 @@ It can almost play chess by itself with a human opponent.
 ### What the project needs:
 * Get a way to accept captures, and this is the same issue as the one over. This goes on in the same class, `testChess.py`. 
 * Spesial moves: *En passant* and *castling* is not taken into account.
-* A functional gripper. The normal buildin gripper workes perfectly fine, but the problem is that it would ruin the pieces in the long term. Cause the pieces is different in size it has to close enought to pick up the smallest piece. So I'm currently trying to come up with an idea of a small enough (so it doesn't bump into other pieces at the board) and strong enough gripper so the piece wont lose it's grip. 
+* A better gripper
 #
 ### What I'm thinking further
 As in the topic "What the project needs", this section is pretty similar.
-+ A gripper is nessesary, that can pick up any piece, so that it doesn't ruin og damage the chess pieces.
 + It needs safety parametre for the robot arm, so it doesn't bump into anything or damage anyone.
-+ When illegal moves is preformed, the robot has to signilize someway that the move is illegal, maybe pointing at a piece of paper that says illegal, or print on the screen "Illegal move". Because chessplaying at boards, it's not always easy to see that you actually did a illegal move, especially if you are under pressure and have limited time to finish the move. 
++ When illegal moves is preformed, the robot has to signilize someway that the move is illegal, maybe pointing at a piece of paper that says illegal, or print on the screen "Illegal move". Because chessplaying at boards, it's not always easy to see that you actually did a illegal move, especially if you are under pressure and have limited time to finish the move.
++ Need a basket for the captured pieces.
 
   
 #
