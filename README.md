@@ -29,7 +29,12 @@ As in the topic "What the project needs", this section is pretty similar.
 + Need a basket for the captured pieces.
 
   
-#
+# Already have everything intsalled
+
+## Do:
+- Download the zip-file.
+- Open the folder you just extracted to Visual Studio code.
+- 
 
 
 
