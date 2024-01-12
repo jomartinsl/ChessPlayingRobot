@@ -34,7 +34,10 @@ As in the topic "What the project needs", this section is pretty similar.
 ## Do:
 - Download the zip-file.
 - Open the folder you just extracted to Visual Studio code.
+- Type into termial: sudo apt update && sudo apt upgrade
+- Type into termial: pip install python-chess
 - 
+
 
 
 
