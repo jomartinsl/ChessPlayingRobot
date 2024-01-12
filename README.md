@@ -20,7 +20,7 @@ It can almost play chess by itself with a human opponent.
 ### What the project needs:
 * Get a way to accept captures, and this is the same issue as the one over. This goes on in the same class, `testChess.py`. 
 * Spesial moves: *En passant* and *castling* is not taken into account.
-* A better gripper
+* A better gripper and more safe gripper, to pick up the pieces.
 #
 ### What I'm thinking further
 As in the topic "What the project needs", this section is pretty similar.
