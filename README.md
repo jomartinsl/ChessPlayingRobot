@@ -36,7 +36,9 @@ As in the topic "What the project needs", this section is pretty similar.
 - Open the folder you just extracted to Visual Studio code.
 - Type into termial: sudo apt update && sudo apt upgrade
 - Type into termial: pip install python-chess
-- 
+- Clone this repository: "https://github.com/niklasf/python-asyncdgt/tree/master" in the same place you have you'r project (zip-file)
+- Type into terminal: pip3 install asyncdgt
+
 
 
 
