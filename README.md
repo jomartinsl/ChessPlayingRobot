@@ -15,7 +15,7 @@ It can almost play chess by itself with a human opponent.
 * The robotarm knows every chess-square, and can move to all of them and pick and place the pieces. The only input needed is the UCI, `b2b4`, which is beeing devided into two variables by two different function's.
 + Choose degree of difficulty (2 --> 10) and color ('white' or 'black').
 + You can play chess against the robot, but it can't capture pieces.
-+ It has a gripper, but it's not really good.
++ It has a gripper, but it need some improvement.
 #
 ### What the project needs:
 * Get a way to accept captures, and this is the same issue as the one over. This goes on in the same class, `testChess.py`. 
